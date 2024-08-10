@@ -88,14 +88,14 @@
                     itemsList.empty();
 
                     if (data.properties.length > 0) {
-                        /*var columns = Object.keys(data.properties[0]).map(function (key) {
-                            return { title: key, data: key };
-                        });
+                        const moneyFormatterParams = {
+                            decimal: ",",
+                            thousand: ".",
+                            symbol: "R$",
+                            symbolAfter: false,
+                            precision: 2
+                        }
 
-                        $('#myTable').DataTable({
-                            data: data.properties,
-                            columns: columns
-                        });*/
                         const propertiesFormatted = data.properties.map(p => {
                             console.log(p.auction_date)
                             return {
@@ -113,39 +113,21 @@
                         var table = new Tabulator("#myTable", {
                             data: propertiesFormatted, // jsonData é o array JSON
                             //autoColumns: true, // Ativa a geração automática de colunas
-                            layout:"fitColumns", 
+                            //layout:"fitColumns", 
+                            responsiveLayout: "collapse", // Layout responsivo para colapsar colunas    
                             //responsiveLayout:"hide",  //hide columns that don't fit on the table
                             pagination:"local",       //paginate the data
                             paginationSize:20,         //allow 20 rows per page of data
                             paginationCounter:"rows", //display count of paginated rows in footer
-                            movableColumns:true,
                             columns:[                 //define the table columns
-                                {title:"Nome", width: "23px", field:"Nome", headerFilter: true},
-                                {title:"Tipo", width: "12px", field:"Tipo", headerFilter: true},
-                                {title:"Bairro", width: "20px", field:"Bairro", headerFilter: true},
-                                {title:"Valor", width: "12px", field:"Valor", headerFilter: true,
-                                    formatter: "money", 
-                                    formatterParams: {
-                                        decimal: ",",
-                                        thousand: ".",
-                                        symbol: "R$",
-                                        symbolAfter: false,
-                                        precision: 2
-                                    }
-                                },
-                                {title:"Valor Avaliação", width: "12px", field:"Valor_Avaliacao", headerFilter: true,
-                                    formatter: "money", 
-                                    formatterParams: {
-                                        decimal: ",",
-                                        thousand: ".",
-                                        symbol: "R$",
-                                        symbolAfter: false,
-                                        precision: 2
-                                    }
-                                },
-                                {title:"Desconto", width: "7px", field:"Desconto", headerFilter: true},
-                                {title:"Situacão", width: "12px", field:"Situacao", headerFilter: true},
-                                {title:"Data", width: "15px", field:"Data", headerFilter: true,
+                                {title:"Imóvel", field:"Nome"},
+                                {title:"Tipo", field:"Tipo"},
+                                {title:"Bairro", field:"Bairro"},
+                                {title:"Valor", field:"Valor", formatter: "money", formatterParams: moneyFormatterParams},
+                                {title:"Valor Avaliação", field:"Valor_Avaliacao", formatter: "money", formatterParams: moneyFormatterParams},
+                                {title:"Desconto", field:"Desconto"},
+                                {title:"Situacão", field:"Situacao"},
+                                {title:"Data", field:"Data",
                                     formatter: "datetime", 
                                     formatterParams: {
                                         inputFormat: "iso",
@@ -154,7 +136,7 @@
                                         invalidPlaceholder: "---" // Placeholder para datas inválidas
                                     }
                                 },
-                                {title:"Condições", field:"Condicoes", headerFilter: true},
+                                {title:"Condições", field:"Condicoes"},
                             ],
                         }); 
                     } else {
