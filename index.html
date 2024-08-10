@@ -80,11 +80,137 @@
 
         <div id="myTable" style="margin-top: 15px;"></div>
 
+        <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailsModalLabel">Detalhes do Item</h5>
+                    </div>
+                    <div class="modal-body" id="modal-body-content">
+                        <div class="mb- 3 row">
+                            <label for="titleDetail" class="col-sm-4 col-form-label"><b>Imóvel</b></label>
+                            <div class="col-sm-8">
+                                <input type="text" readonly class="form-control-plaintext" id="titleDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="externalIdDetail" class="col-sm-4 col-form-label"><b>Código Caixa</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="externalIdDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="typeDetail" class="col-sm-4 col-form-label"><b>Tipo</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="typeDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="valueDetail" class="col-sm-4 col-form-label"><b>Valor</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="valueDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="appraisalValueDetail" class="col-sm-4 col-form-label"><b>Valor Avaliação</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="appraisalValueDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="discountDetail" class="col-sm-4 col-form-label"><b>Desconto</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="discountDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="registrationDetail" class="col-sm-4 col-form-label"><b>Matrícula</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="registrationDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="auctionDateDetail" class="col-sm-4 col-form-label"><b>Data</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="auctionDateDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="auctionNoticeDetail" class="col-sm-4 col-form-label"><b>Edital</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="auctionNoticeDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="auctionItemNumberDetail" class="col-sm-4 col-form-label"><b>Número Item</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="auctionItemNumberDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="cepDetail" class="col-sm-4 col-form-label"><b>CEP</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="cepDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="neighborhoodDetail" class="col-sm-4 col-form-label"><b>Bairro</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="neighborhoodDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="addressDetail" class="col-sm-4 col-form-label"><b>Endereço</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="addressDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="registrationLinkDetail" class="col-sm-4 col-form-label"><b>Link Matrícula</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="registrationLinkDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="auctionLinkDetail" class="col-sm-4 col-form-label"><b>Site leiloeiro</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="auctionLinkDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="linkDetail" class="col-sm-4 col-form-label"><b>Link Caixa</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="linkDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="situationDetail" class="col-sm-4 col-form-label"><b>Situação</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="situationDetail">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="conditions" class="col-sm-4 col-form-label"><b>Condições</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="conditions">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closeModal"
+                            data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
 <script>
     $(document).ready(function () {
+
+        let propertiesData = [];
 
         const moneyFormatterParams = {
             decimal: ",",
@@ -106,21 +232,26 @@
                 paginationSize: 20,         //allow 20 rows per page of data
                 paginationCounter: "rows", //display count of paginated rows in footer
                 columns: [                 //define the table columns
-                    { title: "Imóvel", field: "Nome" },
-                    { title: "Tipo", field: "Tipo" },
-                    { title: "Bairro", field: "Bairro" },
-                    { title: "Valor", field: "Valor", formatter: "money", formatterParams: moneyFormatterParams },
-                    { title: "Valor Avaliação", field: "Valor_Avaliacao", formatter: "money", formatterParams: moneyFormatterParams },
-                    { title: "Desconto", field: "Desconto" },
-                    { title: "Situacão", field: "Situacao" },
+                    { title: "Imóvel", field: "title" },
+                    { title: "Tipo", field: "type" },
+                    { title: "Bairro", field: "neighborhood" },
+                    { title: "Valor", field: "value", formatter: "money", formatterParams: moneyFormatterParams },
+                    { title: "Valor Avaliação", field: "appraisal_value", formatter: "money", formatterParams: moneyFormatterParams },
+                    { title: "Desconto", field: "discount" },
+                    { title: "Situacão", field: "situation" },
                     {
-                        title: "Data", field: "Data",
+                        title: "Data", field: "auction_date",
                         formatter: "datetime",
                         formatterParams: {
                             inputFormat: "iso",
                             outputFormat: "dd/MM/yyyy HH:mm", // Formato da data
                             timezone: "America/Sao_Paulo", // Define o fuso horário
                             invalidPlaceholder: "---" // Placeholder para datas inválidas
+                        }
+                    },
+                    {
+                        title: "Ação", field: "action", formatter: function (cell, formatterParams, onRendered) {
+                            return `<button class="btn btn-info btn-sm view-details" data-id="${cell.getRow().getData().id}">Ver Detalhes</button><br>`;
                         }
                     }
                 ],
@@ -134,19 +265,8 @@
                 data: {},
                 method: 'GET',
                 success: function (data) {
-                    const propertiesFormatted = data.properties.map(p => {
-                        return {
-                            Nome: p.title,
-                            Tipo: p.type,
-                            Bairro: p.neighborhood,
-                            Valor_Avaliacao: p.appraisal_value,
-                            Valor: p.value,
-                            Desconto: p.discount,
-                            Data: p.auction_date,
-                            Situacao: p.situation,
-                        }
-                    })
-                    loadTable(propertiesFormatted)
+                    propertiesData = data.properties;
+                    loadTable(propertiesData)
                 },
                 error: function () {
                     loadTable([])
@@ -178,6 +298,34 @@
                 $('#searchBtn').click(); // Simular o clique no botão de pesquisa
             }
         });
+
+        $('#myTable').on('click', '.view-details', async function () {
+            const id = $(this).data('id');
+            const property = propertiesData.find(p => p.id == id);
+            $('#titleDetail').val(property.title);
+            $('#externalIdDetail').val(property.external_id);
+            $('#typeDetail').val(property.type);
+            $('#valueDetail').val(property.value);
+            $('#appraisalValueDetail').val(property.appraisal_value);
+            $('#discountDetail').val(property.discount);
+            $('#registrationDetail').val(property.registration);
+            $('#auctionDateDetail').val(property.auction_date);
+            $('#auctionNoticeDetail').val(property.auction_notice);
+            $('#auctionItemNumberDetail').val(property.auction_item_number);
+            $('#cepDetail').val(property.cep);
+            $('#neighborhoodDetail').val(property.neighborhood);
+            $('#addressDetail').val(property.address);
+            $('#registrationLinkDetail').val(property.registration_link);
+            $('#auctionLinkDetail').val(property.auction_link);
+            $('#linkDetail').val(property.link);
+            $('#situationDetail').val(property.situation);
+            $('#conditions').val(property.conditions.map(c => c.description).join("\n"));
+            $('#detailsModal').modal('show');
+        });
+
+        $('#closeModal').click(function () {
+            $('#detailsModal').modal('toggle');
+        })
 
         loadItems(); // Carrega os itens ao iniciar a página
     });
