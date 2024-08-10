@@ -22,14 +22,13 @@
 <body>
     <div class="container" style="margin-top: 15px;">
 
-        <div class="row justify-content-between">
-            <div class="col-3">
+        <div class="row">
+            <div class="col-6 col-md-8">
                 <h1>Imóveis</h1>
             </div>
-            <div class="col-3">
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter"
-                    aria-expanded="false" aria-controls="collapseFilter">
-                    <i class="bi bi-eye"></i> Filtros
+            <div class="col-6 col-md-auto d-flex justify-content-end">
+                <button class="btn btn-primary" id="searchBtn" type="button">
+                    <i class="bi bi-search"></i> Pesquisar
                 </button>
             </div>
         </div>
@@ -72,94 +71,98 @@
                     <option>Desocupado</option>
                 </select>
             </div>
-            <div class="col-12">
+            <!--div class="col-12">
                 <div class="d-grid gap-2">
-                    <button id="searchBtn" type="submit" class="btn btn-primary">Filtrar</button>
+                    <button id="searchBtn" type="submit" class="btn btn-primary">Pesquisar</button>
                 </div>
-            </div>
+            </div-->
         </div>
 
-        <div id="myTable"></div>
+        <div id="myTable" style="margin-top: 15px;"></div>
 
     </div>
 </body>
 
 <script>
     $(document).ready(function () {
+
+        const moneyFormatterParams = {
+            decimal: ",",
+            thousand: ".",
+            symbol: "R$",
+            symbolAfter: false,
+            precision: 2
+        }
+
+        const loadTable = (data, placeholder = "Nenhum dado encontrado.") => {
+            const tableProperties = new Tabulator("#myTable", {
+                placeholder: placeholder, // Mensagem padrão quando não há dados
+                //autoColumns: true, // Ativa a geração automática de colunas
+                data: data,
+                //layout: "fitColumns",
+                responsiveLayout: "collapse", // Layout responsivo para colapsar colunas    
+                //responsiveLayout:"hide",  //hide columns that don't fit on the table
+                pagination: "local",       //paginate the data
+                paginationSize: 20,         //allow 20 rows per page of data
+                paginationCounter: "rows", //display count of paginated rows in footer
+                columns: [                 //define the table columns
+                    { title: "Imóvel", field: "Nome" },
+                    { title: "Tipo", field: "Tipo" },
+                    { title: "Bairro", field: "Bairro" },
+                    { title: "Valor", field: "Valor", formatter: "money", formatterParams: moneyFormatterParams },
+                    { title: "Valor Avaliação", field: "Valor_Avaliacao", formatter: "money", formatterParams: moneyFormatterParams },
+                    { title: "Desconto", field: "Desconto" },
+                    { title: "Situacão", field: "Situacao" },
+                    {
+                        title: "Data", field: "Data",
+                        formatter: "datetime",
+                        formatterParams: {
+                            inputFormat: "iso",
+                            outputFormat: "dd/MM/yyyy HH:mm", // Formato da data
+                            timezone: "America/Sao_Paulo", // Define o fuso horário
+                            invalidPlaceholder: "---" // Placeholder para datas inválidas
+                        }
+                    }
+                ],
+            });
+        }
+
         function loadItems(filter = {}) {
+            loadTable([], "Carregando dados...")
             $.ajax({
                 url: 'https://corsproxy.io/?' + encodeURIComponent(`http://nodered.thiagosol.com/auction/properties?${$.param(filter)}`), // Substitua com a URL da sua API
                 data: {},
                 method: 'GET',
                 success: function (data) {
-                    const itemsList = $('#items-list');
-                    itemsList.empty();
-
-                    if (data.properties.length > 0) {
-                        const moneyFormatterParams = {
-                            decimal: ",",
-                            thousand: ".",
-                            symbol: "R$",
-                            symbolAfter: false,
-                            precision: 2
+                    const propertiesFormatted = data.properties.map(p => {
+                        return {
+                            Nome: p.title,
+                            Tipo: p.type,
+                            Bairro: p.neighborhood,
+                            Valor_Avaliacao: p.appraisal_value,
+                            Valor: p.value,
+                            Desconto: p.discount,
+                            Data: p.auction_date,
+                            Situacao: p.situation,
                         }
-
-                        const propertiesFormatted = data.properties.map(p => {
-                            return {
-                                Nome: p.title,
-                                Tipo: p.type,
-                                Bairro: p.neighborhood,
-                                Valor_Avaliacao: p.appraisal_value,
-                                Valor: p.value,
-                                Desconto: p.discount,
-                                Data: p.auction_date,
-                                Situacao: p.situation,
-                            }
-                        })
-                        var table = new Tabulator("#myTable", {
-                            data: propertiesFormatted, // jsonData é o array JSON
-                            //autoColumns: true, // Ativa a geração automática de colunas
-                            //layout:"fitColumns", 
-                            responsiveLayout: "collapse", // Layout responsivo para colapsar colunas    
-                            //responsiveLayout:"hide",  //hide columns that don't fit on the table
-                            pagination: "local",       //paginate the data
-                            paginationSize: 20,         //allow 20 rows per page of data
-                            paginationCounter: "rows", //display count of paginated rows in footer
-                            columns: [                 //define the table columns
-                                { title: "Imóvel", field: "Nome" },
-                                { title: "Tipo", field: "Tipo" },
-                                { title: "Bairro", field: "Bairro" },
-                                { title: "Valor", field: "Valor", formatter: "money", formatterParams: moneyFormatterParams },
-                                { title: "Valor Avaliação", field: "Valor_Avaliacao", formatter: "money", formatterParams: moneyFormatterParams },
-                                { title: "Desconto", field: "Desconto" },
-                                { title: "Situacão", field: "Situacao" },
-                                {
-                                    title: "Data", field: "Data",
-                                    formatter: "datetime",
-                                    formatterParams: {
-                                        inputFormat: "iso",
-                                        outputFormat: "dd/MM/yyyy HH:mm", // Formato da data
-                                        timezone: "America/Sao_Paulo", // Define o fuso horário
-                                        invalidPlaceholder: "---" // Placeholder para datas inválidas
-                                    }
-                                }
-                            ],
-                        });
-                    } else {
-                        itemsList.append('<div class="item">Nenhum item encontrado.</div>');
-                    }
-
+                    })
+                    loadTable(propertiesFormatted)
                 },
                 error: function () {
-                    alert('Erro ao carregar os itens.');
+                    loadTable([])
                 }
             });
         }
 
         $('#searchBtn').click(function () {
+            if (!$('#collapseFilter').hasClass('show')) {
+                $('#collapseFilter').collapse('show')
+                return;
+            }
+            $('#collapseFilter').collapse('toggle')
             const filter = {
                 nome: $('#nome').val(),
-                tipo: $('#tipo').val()  == 'Todos' ? '' : $('#tipo').val(),
+                tipo: $('#tipo').val() == 'Todos' ? '' : $('#tipo').val(),
                 endereco: $('#endereco').val(),
                 bairro: $('#bairro').val(),
                 valorMin: $('#valorMin').val(),
