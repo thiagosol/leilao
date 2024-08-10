@@ -80,7 +80,7 @@
     $(document).ready(function () {
         function loadItems(filter = '') {
             $.ajax({
-                url: 'http://nodered.thiagosol.com/auction/properties', // Substitua com a URL da sua API
+                url: 'https://corsproxy.io/?' + encodeURIComponent('http://nodered.thiagosol.com/auction/properties?u=u'), // Substitua com a URL da sua API
                 data: { filter: filter },
                 method: 'GET',
                 success: function (data) {
