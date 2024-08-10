@@ -64,7 +64,7 @@
                 <input class="form-control" id="valorMax">
             </div>
             <div class="col-md-6">
-                <label for="situacao" class="form-label">Situaçãoo</label>
+                <label for="situacao" class="form-label">Situação</label>
                 <select id="situacao" class="form-select">
                     <option selected>Todos</option>
                     <option>Ocupado</option>
@@ -170,6 +170,13 @@
                 situacao: $('#situacao').val() == 'Todos' ? '' : $('#situacao').val()
             }
             loadItems(filter);
+        });
+
+        $('#collapseFilter').on('keypress', 'input', function (e) {
+            if (e.which === 13) { // Código da tecla Enter
+                e.preventDefault(); // Evitar a ação padrão do Enter, como o envio de um formulário
+                $('#searchBtn').click(); // Simular o clique no botão de pesquisa
+            }
         });
 
         loadItems(); // Carrega os itens ao iniciar a página
