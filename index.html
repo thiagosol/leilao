@@ -15,49 +15,62 @@
     <link href="https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator.min.css" rel="stylesheet">
     <link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator_bootstrap4.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
-    <!--link rel="stylesheet" href="https://cdn.datatables.net/2.1.3/css/dataTables.dataTables.css" />
-    <script src="https://cdn.datatables.net/2.1.3/js/dataTables.js"></script-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <!-- https://getbootstrap.com/docs/5.3/forms/layout/ -->
 
 <body>
-    <div class="container">
-        <h1>Imóveis</h1>
-        <div class="row g-3" style="display: none;">
+    <div class="container" style="margin-top: 15px;">
+
+        <div class="row justify-content-between">
+            <div class="col-3">
+                <h1>Imóveis</h1>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter"
+                    aria-expanded="false" aria-controls="collapseFilter">
+                    <i class="bi bi-eye"></i> Filtros
+                </button>
+            </div>
+        </div>
+
+
+        <div class="collapse row g-3" id="collapseFilter">
             <div class="col-md-6">
-                <label for="inputEmail4" class="form-label">Nome</label>
-                <input type="email" class="form-control" id="inputEmail4">
+                <label for="nome" class="form-label">Nome</label>
+                <input class="form-control" id="nome">
             </div>
             <div class="col-md-6">
-                <label for="inputState" class="form-label">Tipo</label>
-                <select id="inputState" class="form-select">
-                    <option selected>Apartamento</option>
+                <label for="tipo" class="form-label">Tipo</label>
+                <select id="tipo" class="form-select">
+                    <option selected>Todos</option>
+                    <option>Apartamento</option>
                     <option>Casa</option>
                 </select>
             </div>
             <div class="col-md-6">
-                <label for="inputPassword4" class="form-label">Endereço</label>
-                <input type="password" class="form-control" id="inputPassword4">
+                <label for="endereco" class="form-label">Endereço</label>
+                <input class="form-control" id="endereco">
             </div>
             <div class="col-md-6">
-                <label for="inputPassword4" class="form-label">Bairro</label>
-                <input type="password" class="form-control" id="inputPassword4">
+                <label for="bairro" class="form-label">Bairro</label>
+                <input class="form-control" id="bairro">
             </div>
             <div class="col-md-6">
-                <label for="inputPassword4" class="form-label">Valor Min</label>
-                <input type="password" class="form-control" id="inputPassword4">
+                <label for="valorMin" class="form-label">Valor Min</label>
+                <input class="form-control" id="valorMin">
             </div>
             <div class="col-md-6">
-                <label for="inputPassword4" class="form-label">Valor Máx</label>
-                <input type="password" class="form-control" id="inputPassword4">
+                <label for="valorMax" class="form-label">Valor Máx</label>
+                <input class="form-control" id="valorMax">
             </div>
-            <div class="col-12">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                        Desocupado
-                    </label>
-                </div>
+            <div class="col-md-6">
+                <label for="situacao" class="form-label">Situaçãoo</label>
+                <select id="situacao" class="form-select">
+                    <option selected>Todos</option>
+                    <option>Ocupado</option>
+                    <option>Desocupado</option>
+                </select>
             </div>
             <div class="col-12">
                 <div class="d-grid gap-2">
@@ -67,21 +80,16 @@
         </div>
 
         <div id="myTable"></div>
-        <!--table id="myTable" class="display">
-            <thead>
-            </thead>
-            <tbody>
-            </tbody>
-        </table-->
+
     </div>
 </body>
 
 <script>
     $(document).ready(function () {
-        function loadItems(filter = '') {
+        function loadItems(filter = {}) {
             $.ajax({
-                url: 'https://corsproxy.io/?' + encodeURIComponent('http://nodered.thiagosol.com/auction/properties?u=u'), // Substitua com a URL da sua API
-                data: { filter: filter },
+                url: 'https://corsproxy.io/?' + encodeURIComponent(`http://nodered.thiagosol.com/auction/properties?${$.param(filter)}`), // Substitua com a URL da sua API
+                data: {},
                 method: 'GET',
                 success: function (data) {
                     const itemsList = $('#items-list');
@@ -97,7 +105,6 @@
                         }
 
                         const propertiesFormatted = data.properties.map(p => {
-                            console.log(p.auction_date)
                             return {
                                 Nome: p.title,
                                 Tipo: p.type,
@@ -107,7 +114,6 @@
                                 Desconto: p.discount,
                                 Data: p.auction_date,
                                 Situacao: p.situation,
-                                Condicoes: p.conditions.map(c => c.description).join(" | ")
                             }
                         })
                         var table = new Tabulator("#myTable", {
@@ -116,29 +122,29 @@
                             //layout:"fitColumns", 
                             responsiveLayout: "collapse", // Layout responsivo para colapsar colunas    
                             //responsiveLayout:"hide",  //hide columns that don't fit on the table
-                            pagination:"local",       //paginate the data
-                            paginationSize:20,         //allow 20 rows per page of data
-                            paginationCounter:"rows", //display count of paginated rows in footer
-                            columns:[                 //define the table columns
-                                {title:"Imóvel", field:"Nome"},
-                                {title:"Tipo", field:"Tipo"},
-                                {title:"Bairro", field:"Bairro"},
-                                {title:"Valor", field:"Valor", formatter: "money", formatterParams: moneyFormatterParams},
-                                {title:"Valor Avaliação", field:"Valor_Avaliacao", formatter: "money", formatterParams: moneyFormatterParams},
-                                {title:"Desconto", field:"Desconto"},
-                                {title:"Situacão", field:"Situacao"},
-                                {title:"Data", field:"Data",
-                                    formatter: "datetime", 
+                            pagination: "local",       //paginate the data
+                            paginationSize: 20,         //allow 20 rows per page of data
+                            paginationCounter: "rows", //display count of paginated rows in footer
+                            columns: [                 //define the table columns
+                                { title: "Imóvel", field: "Nome" },
+                                { title: "Tipo", field: "Tipo" },
+                                { title: "Bairro", field: "Bairro" },
+                                { title: "Valor", field: "Valor", formatter: "money", formatterParams: moneyFormatterParams },
+                                { title: "Valor Avaliação", field: "Valor_Avaliacao", formatter: "money", formatterParams: moneyFormatterParams },
+                                { title: "Desconto", field: "Desconto" },
+                                { title: "Situacão", field: "Situacao" },
+                                {
+                                    title: "Data", field: "Data",
+                                    formatter: "datetime",
                                     formatterParams: {
                                         inputFormat: "iso",
                                         outputFormat: "dd/MM/yyyy HH:mm", // Formato da data
                                         timezone: "America/Sao_Paulo", // Define o fuso horário
                                         invalidPlaceholder: "---" // Placeholder para datas inválidas
                                     }
-                                },
-                                {title:"Condições", field:"Condicoes"},
+                                }
                             ],
-                        }); 
+                        });
                     } else {
                         itemsList.append('<div class="item">Nenhum item encontrado.</div>');
                     }
@@ -151,7 +157,15 @@
         }
 
         $('#searchBtn').click(function () {
-            const filter = $('#search').val();
+            const filter = {
+                nome: $('#nome').val(),
+                tipo: $('#tipo').val()  == 'Todos' ? '' : $('#tipo').val(),
+                endereco: $('#endereco').val(),
+                bairro: $('#bairro').val(),
+                valorMin: $('#valorMin').val(),
+                valorMax: $('#valorMax').val(),
+                situacao: $('#situacao').val() == 'Todos' ? '' : $('#situacao').val()
+            }
             loadItems(filter);
         });
 
