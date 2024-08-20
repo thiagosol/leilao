@@ -42,8 +42,6 @@
                 <label for="tipo" class="form-label">Tipo</label>
                 <select id="tipo" class="form-select">
                     <option selected>Todos</option>
-                    <option>Apartamento</option>
-                    <option>Casa</option>
                 </select>
             </div>
             <div class="col-md-6">
@@ -52,7 +50,9 @@
             </div>
             <div class="col-md-6">
                 <label for="bairro" class="form-label">Bairro</label>
-                <input class="form-control" id="bairro">
+                <select id="bairro" class="form-select">
+                    <option selected>Todos</option>
+                </select>
             </div>
             <div class="col-md-6">
                 <label for="valorMin" class="form-label">Valor Min</label>
@@ -63,18 +63,17 @@
                 <input class="form-control" id="valorMax">
             </div>
             <div class="col-md-6">
+                <label for="modalidade" class="form-label">Modalidade</label>
+                <select id="modalidade" class="form-select">
+                    <option selected>Todos</option>
+                </select>
+            </div>
+            <div class="col-md-6">
                 <label for="situacao" class="form-label">Situação</label>
                 <select id="situacao" class="form-select">
                     <option selected>Todos</option>
-                    <option>Ocupado</option>
-                    <option>Desocupado</option>
                 </select>
             </div>
-            <!--div class="col-12">
-                <div class="d-grid gap-2">
-                    <button id="searchBtn" type="submit" class="btn btn-primary">Pesquisar</button>
-                </div>
-            </div-->
         </div>
 
         <div id="myTable" style="margin-top: 15px;"></div>
@@ -103,6 +102,12 @@
                             <label for="typeDetail" class="col-sm-4 col-form-label"><b>Tipo</b></label>
                             <div class="col-sm-8">
                                 <input type="text" readonly class="form-control-plaintext" id="typeDetail">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="modalityDetail" class="col-sm-4 col-form-label"><b>Modalidade</b></label>
+                            <div class="col-sm-8">
+                                <input type="text" readonly class="form-control-plaintext" id="modalityDetail">
                             </div>
                         </div>
                         <div class="row">
@@ -263,6 +268,10 @@
                 success: function (data) {
                     propertiesData = data.properties;
                     loadTable(propertiesData)
+                    loadSituations();
+                    loadNeighborhoods();
+                    loadTypes();
+                    loadModalities();
                 },
                 error: function () {
                     loadTable([])
@@ -280,10 +289,11 @@
                 nome: $('#nome').val(),
                 tipo: $('#tipo').val() == 'Todos' ? '' : $('#tipo').val(),
                 endereco: $('#endereco').val(),
-                bairro: $('#bairro').val(),
+                bairro: $('#bairro').val() == 'Todos' ? '' : $('#bairro').val(),
                 valorMin: $('#valorMin').val(),
                 valorMax: $('#valorMax').val(),
-                situacao: $('#situacao').val() == 'Todos' ? '' : $('#situacao').val()
+                situacao: $('#situacao').val() == 'Todos' ? '' : $('#situacao').val(),
+                modalidade: $('#modalidade').val() == 'Todos' ? '' : $('#modalidade').val()
             }
             loadItems(filter);
         });
@@ -301,6 +311,7 @@
             $('#titleDetail').val(property.title);
             $('#externalIdDetail').val(property.external_id);
             $('#typeDetail').val(property.type);
+            $('#modalityDetail').val(property.modality);
             $('#valueDetail').val(property.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
             $('#appraisalValueDetail').val(property.appraisal_value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
             $('#discountDetail').val(property.discount);
@@ -334,6 +345,34 @@
         $('#closeModal').click(function () {
             $('#detailsModal').modal('toggle');
         })
+
+        function loadSituations(){
+            loadSelect('situacao', 'situation');
+        }
+
+        function loadNeighborhoods(){
+            loadSelect('bairro', 'neighborhood');
+        }
+
+        function loadTypes(){
+            loadSelect('tipo', 'type');
+        }
+
+        function loadSelect(name, param, withId = false){
+            if ($(`#${name} option`).length === 1 && $(`#${name} option`).first().text() === 'Todos') {
+                [...new Set(propertiesData.map(p => p[param]))].sort().forEach(n => {
+                    $(`#${name}`).append(`<option>${n}</option>`);
+                })
+            }
+        }
+
+        function loadModalities(){
+            if ($('#modalidade option').length === 1 && $('#modalidade option').first().text() === 'Todos') {
+                [...new Set(propertiesData.map(p => p.modality_id))].forEach(m => {
+                    $('#modalidade').append(`<option value="${m}">${propertiesData.find(p => p.modality_id == m).modality}</option>`);
+                })
+            }
+        }
 
         loadItems();
     });
